@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Season and Periods</title>
+
+    <style>
+#timeline {
+
+}
+
+#timeline span {
+    display: block;
+    height: 20px;
+    width: 20px;
+    padding: 2px;
+    background-color: #00ffaf;
+    margin: 0;
+    border: 1px solid #ccc;
+    float: left;
+}
+
+#timeline span:hover {
+    background-color: #0091cc;
+}
+
+#timeline span.split::after,
+#timeline span:hover::after {
+    background-color: #ffbd3a;
+    display: block;
+    height: 25px;
+    width: 14px;
+    position: relative;
+    top: -53px;
+    left: 23px;
+    content: '';
+}
+
+    </style>
+
+<script>
+
+/**
+ *  Rapresent a delta of time
+ *
+ * @param start Date
+ * @param end Date
+ * @constructor
+ */
+let Period = function (start, end) {
+    this.start = start;
+    this.end = end;
+};
+/**
+ * Check if the given date in inside the range of the current Period
+ *
+ * @param date Date
+ */
+Period.prototype.contains = function (date) {
+    return this.start.getTime() < date.getTime() && this.end.getTime() > date.getTime();
+};
+
+Period.prototype.toString = function () {
+    return '(' + this.start.toDateString() + ', ' + this.end.toDateString() + ')';
+};
+
+/**
+ * A semantically named collection of Periods
+ *
+ * @param name
+ * @param start
+ * @param end
+ * @param periods
+ * @constructor
+ */
+let Season = function (name, start, end, periods) {
+    this.constructor = Period;
+    this.periods = Array.isArray(periods) ?
+                    periods :
+                    [new Period(start, end)];
+    this.name = name;
+};
+Season.prototype.count = function () {
+    return this.periods.length;
+};
+Season.prototype.periods = function () {
+    return this.periods;
+};
+/**
+ *
+ * @param when Date
+ */
+Season.prototype.split = function (when) {
+    if (when.constructor !== Date) {
+        throw new TypeError("Must be of type Date");
+    }
+
+    let it = this.periods[Symbol.iterator]();
+
+    let prev;
+    let cursor = it.next();
+    let position = 1;
+    while (!cursor.done) {
+        prev = cursor.value;
+        if (prev.contains(when)) {
+            let newPeriod = new Period(when, prev.end);
+            prev.end = new Date(when.getFullYear(),when.getMonth(), when.getDate() - 1);
+            this.periods.splice(position, 0, newPeriod);
+        }
+        position++;
+        cursor = it.next();
+    }
+};
+Season.prototype.unsplit = function () {
+
+};
+Season.prototype.render = function () {
+    this.periods.forEach(function (period) {
+        console.log(period.toString());
+    });
+}
+
+
+
+
+var season = new Season(
+    'Stagione 2018',
+    new Date(2018, 3, 1),
+    new Date(2018, 3, 30)
+);
+
+
+season.split(new Date(2018, 3,15));
+season.split(new Date(2018, 3,13));
+season.split(new Date(2018, 7,15));
+
+season.render();
+
+function render(season) {
+
+}
+
+</script>
+
+</head>
+<body>
+
+<h1>Season and Periods</h1>
+
+<div id="timeline">
+    <span>1</span>
+    <span>2</span>
+    <span class="split">3</span>
+    <span>4</span>
+    <span>5</span>
+    <span>6</span>
+    <span>7</span>
+</div>
+
+</body>
+</html>
