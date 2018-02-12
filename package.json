@@ -1,0 +1,12 @@
+{
+  "author": "Maxowar",
+  "description": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "moment": "^2.20.1",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+
+  }
+}
