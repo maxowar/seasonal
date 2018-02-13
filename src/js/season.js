@@ -1,3 +1,4 @@
+import Period from './period';
 
 /**
  * A semantically named collection of Periods
@@ -57,3 +58,5 @@ Season.prototype.toString = function () {
     });
     return serialized;
 }
+
+export default Season;

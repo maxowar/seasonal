@@ -1,5 +1,5 @@
 /**
- *  Rapresent a delta of time
+ *  Representsp a delta of time
  *
  * @param start Date
  * @param end Date
@@ -21,3 +21,5 @@ Period.prototype.contains = function (date) {
 Period.prototype.toString = function () {
     return '(' + this.start.toDateString() + ', ' + this.end.toDateString() + ')';
 };
+
+export default Period;

@@ -1,3 +1,4 @@
+import RangeDateIterator from './rangeDateIterator';
 
 function SeasonRender(seasonToRender, opts) {
 
@@ -55,3 +56,6 @@ function SeasonRender(seasonToRender, opts) {
     }
 
 }
+
+
+export default SeasonRender;

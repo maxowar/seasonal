@@ -17,3 +17,5 @@ function RangeDateIterator(date, untilDate) {
 
 
 }
+
+export default RangeDateIterator;
