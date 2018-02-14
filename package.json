@@ -1,7 +1,7 @@
 {
   "author": "Maxowar",
   "description": "Season and Periods: a calendar splittable in chunks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "moment": "^2.20.1",
     "jquery": "^3.3.1"
@@ -11,7 +11,8 @@
     "node-sass": "^4.7.2"
   },
   "scripts": {
-    "build": "parcel build src/seasonal.js",
+    "watch": "parcel examples/index.html",
+    "build": "parcel build src/js/seasonal.js",
     "test": "jasmine"
   }
 }

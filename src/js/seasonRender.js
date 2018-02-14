@@ -26,10 +26,14 @@ function SeasonRender(seasonToRender, opts) {
             }
 
             dayElement.textContent = current.getDate();
-            dayElement.addEventListener('click', function (event) {
-                season.split(new Date(Number(this.getAttribute('data-time'))));
-                this.className = 'split';
-            })
+
+            if(typeof season.index[current.getTime()] != 'undefined') {
+                dayElement.addEventListener('click', unsplitOnClick);
+                dayElement.className = 'split';
+            } else {
+                dayElement.addEventListener('click', splitOnClick);
+            }
+
             dayElement.setAttribute('data-date', current.getFullYear() + '_' + current.getMonth() + '_' + current.getDate());
             dayElement.setAttribute('data-time', current.getTime());
             dayElement.setAttribute('date-month', current.getMonth());
@@ -53,6 +57,22 @@ function SeasonRender(seasonToRender, opts) {
         p.textContent = it.value().toLocaleString('it', { month: "long" });
         div.appendChild(p);
         return div;
+    }
+
+    function splitOnClick(event) {
+            event.target.removeEventListener('click', splitOnClick);
+            event.target.addEventListener('click', unsplitOnClick);
+
+            season.split(new Date(Number(this.getAttribute('data-time'))));
+            this.className = 'split';
+    }
+
+    function unsplitOnClick(event) {
+        this.removeEventListener('click', unsplitOnClick);
+        this.addEventListener('click', splitOnClick);
+
+        season.unsplit(new Date(Number(this.getAttribute('data-time'))));
+        this.className = '';
     }
 
 }

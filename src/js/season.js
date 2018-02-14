@@ -14,8 +14,37 @@ let Season = function (name, start, end, periods) {
     this.periods = Array.isArray(periods) ?
         periods :
         [new Period(start, end)];
+    this.index = {};
     this.name = name;
     this.constructor(start, end);
+
+    this.mergePeriods = function (period1, period2) {
+        return new Period(period1.start, period2.end);
+    };
+
+    this.findPeriod = function (date) {
+        let it = this.periods[Symbol.iterator]();
+
+        let cursor = it.next();
+        while (!cursor.done) {
+            if (cursor.value.contains(date)) {
+                return cursor.value;
+            }
+            cursor = it.next();
+        }
+    };
+
+    this.buildIndex = function () {
+        var i;
+        for(i = 0; i < this.periods.length; i++) {
+            this.index[this.periods[i].end.getTime()] = {
+                index: i,
+                period: this.periods[i]
+            };
+        }
+    };
+
+    this.buildIndex();
 };
 Season.prototype.count = function () {
     return this.periods.length;
@@ -40,21 +69,30 @@ Season.prototype.split = function (when) {
     while (!cursor.done) {
         prev = cursor.value;
         if (prev.contains(when)) {
-            let newPeriod = new Period(when, prev.end);
-            prev.end = new Date(when.getFullYear(),when.getMonth(), when.getDate() - 1);
+            let newPeriod = new Period(new Date(when.getFullYear(),when.getMonth(), when.getDate() + 1), prev.end);
+            prev.end = when;
             this.periods.splice(position, 0, newPeriod);
+            this.buildIndex();
         }
         position++;
         cursor = it.next();
     }
 };
-Season.prototype.unsplit = function () {
+Season.prototype.unsplit = function (date) {
+    if(typeof this.index[date.getTime()] != 'undefined') {
 
+        let cursor = this.index[date.getTime()];
+
+        cursor.period.end = this.periods[cursor.index + 1].end;
+        this.periods.splice(cursor.index + 1, 1);
+
+        this.buildIndex();
+    }
 };
 Season.prototype.toString = function () {
     var serialized = ''
     this.periods.forEach(function (period) {
-        serialized += period.toString();
+        serialized += period.toString() + '<br>';
     });
     return serialized;
 }
