@@ -1,14 +1,21 @@
 {
+  "name": "seasonal",
   "author": "Maxowar",
   "description": "Season and Periods: a calendar splittable in chunks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
+    "jquery": "^3.3.1",
     "moment": "^2.20.1",
-    "jquery": "^3.3.1"
+    "moment-range": "^3.1.1",
+    "mustache": "^2.3.0"
   },
   "devDependencies": {
     "jasmine": "^3.0.0",
     "node-sass": "^4.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxowar/seasonal.git"
   },
   "scripts": {
     "watch": "parcel examples/index.html",

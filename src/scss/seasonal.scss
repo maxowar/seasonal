@@ -1,4 +1,78 @@
-#timeline {
+#season {
+
+
+  .cld-datetime{
+    position: relative;
+    width: 66%;
+    min-width: 100px;
+    max-width: 300px;
+    margin: auto;
+    overflow: hidden;
+  }
+  .title{
+    position: relative;
+    float: left;
+    width: calc(100% - 40px);
+    margin: auto;
+    text-align: center;
+  }
+  .nav{
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+  }
+  .nav:hover{
+    cursor: pointer;
+  }
+  .nav:hover svg{
+    fill: #666;
+  }
+  .rwd{
+    float: left;
+  }
+  .fwd{
+    float: right;
+  }
+  .nav svg:hover{
+
+  }
+  .labels,
+  ul{
+    padding-left: 0;
+  }
+  .labels li,
+  .days li{
+    display: inline-block;
+    width: 14.28%;
+    text-align: center;
+  }
+
+  li.disable{
+    opacity: 0.5;
+  }
+  li.nextMonth,
+  li.prevMonth{
+    opacity: 0.33;
+  }
+  p{
+    position: relative;
+    margin: 5px;
+    padding: 5px;
+  }
+
+  p.event{
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border-radius: 50px;
+    border: 1px solid #999;
+  }
+  p.event:hover{
+    cursor: pointer;
+    background: #eee;
+  }
+
 
   span {
     display: block;
@@ -36,3 +110,4 @@
     clear: left;
   }
 }
+

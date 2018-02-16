@@ -1,5 +1,5 @@
 /**
- *  Representsp a delta of time
+ *  Represents a delta of time
  *
  * @param start Date
  * @param end Date
@@ -15,7 +15,7 @@ let Period = function (start, end) {
  * @param date Date
  */
 Period.prototype.contains = function (date) {
-    return this.start.getTime() < date.getTime() && this.end.getTime() > date.getTime();
+    return this.start.getTime() <= date.getTime() && this.end.getTime() > date.getTime();
 };
 
 Period.prototype.toString = function () {

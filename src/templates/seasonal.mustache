@@ -1,0 +1,26 @@
+<div class="calendar">
+    <div class="title">
+        {{title}}
+    </div>
+
+    <div class="labels">
+        <ul>
+            <li>Mon</li>
+            <li>Tue</li>
+            <li>Wed</li>
+            <li>Thu</li>
+            <li>Fri</li>
+            <li>Sat</li>
+            <li>Sun</li>
+        </ul>
+    </div>
+
+    <div class="days">
+        <ul>
+            {{#days}}
+            <li class="{{class}}"><p>{{day}}</p></li>
+            {{/days}}
+        </ul>
+    </div>
+
+</div>

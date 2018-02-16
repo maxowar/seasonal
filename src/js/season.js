@@ -11,12 +11,13 @@ import Period from './period';
  */
 let Season = function (name, start, end, periods) {
     this.constructor = Period;
+    this.constructor(start, end);
+
     this.periods = Array.isArray(periods) ?
         periods :
         [new Period(start, end)];
     this.index = {};
     this.name = name;
-    this.constructor(start, end);
 
     this.mergePeriods = function (period1, period2) {
         return new Period(period1.start, period2.end);
@@ -73,10 +74,13 @@ Season.prototype.split = function (when) {
             prev.end = when;
             this.periods.splice(position, 0, newPeriod);
             this.buildIndex();
+            return true;
         }
         position++;
         cursor = it.next();
     }
+    console.debug('When is not inside the season range');
+    return false;
 };
 Season.prototype.unsplit = function (date) {
     if(typeof this.index[date.getTime()] != 'undefined') {

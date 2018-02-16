@@ -1,78 +1,30 @@
-import RangeDateIterator from './rangeDateIterator';
+import BaseRender from './render/base';
+import MustacheRender from './render/mustache';
 
 function SeasonRender(seasonToRender, opts) {
 
     var season = seasonToRender;
     var options = Object.assign({}, defaults(), opts);
-
-    this.render = function() {
-        drawDays();
+    var engines = {
+        'Base': BaseRender,
+        'Mustache': MustacheRender
     };
 
-    function drawDays() {
-        var it = new RangeDateIterator(season.start, season.end);
-        var rootElement = document.getElementById(options.root_element);
-        var current_month;
-        var monthElement;
+    this.render = function() {
+        // dynamic import
+        //var resource = './render/' + ;
+        //import(resource).then();
+        var engine = new engines[options['render_engine']](season);
+        var htmlElement = engine.calendar();
 
-        while (it.valid()) {
-            var current = it.value();
-            var dayElement = document.createElement('span');
-
-            if(current_month != it.value().getMonth()) {
-                current_month = it.value().getMonth();
-                monthElement = createMonthElement(it)
-                rootElement.appendChild(monthElement);
-            }
-
-            dayElement.textContent = current.getDate();
-
-            if(typeof season.index[current.getTime()] != 'undefined') {
-                dayElement.addEventListener('click', unsplitOnClick);
-                dayElement.className = 'split';
-            } else {
-                dayElement.addEventListener('click', splitOnClick);
-            }
-
-            dayElement.setAttribute('data-date', current.getFullYear() + '_' + current.getMonth() + '_' + current.getDate());
-            dayElement.setAttribute('data-time', current.getTime());
-            dayElement.setAttribute('date-month', current.getMonth());
-            monthElement.appendChild(dayElement);
-
-            it.next();
-        }
-    }
+        document.getElementById(options['root_element']).appendChild(htmlElement);
+    };
 
     function defaults() {
         return {
-            root_element: 'timeline'
+            root_element: 'season',
+            render_engine: 'Mustache'
         }
-    }
-
-    function createMonthElement(it) {
-        var div = document.createElement('div');
-        div.setAttribute('data-month', it.value().getMonth());
-        div.setAttribute('class', 'month');
-        var p = document.createElement('p');
-        p.textContent = it.value().toLocaleString('it', { month: "long" });
-        div.appendChild(p);
-        return div;
-    }
-
-    function splitOnClick(event) {
-            event.target.removeEventListener('click', splitOnClick);
-            event.target.addEventListener('click', unsplitOnClick);
-
-            season.split(new Date(Number(this.getAttribute('data-time'))));
-            this.className = 'split';
-    }
-
-    function unsplitOnClick(event) {
-        this.removeEventListener('click', unsplitOnClick);
-        this.addEventListener('click', splitOnClick);
-
-        season.unsplit(new Date(Number(this.getAttribute('data-time'))));
-        this.className = '';
     }
 
 }
