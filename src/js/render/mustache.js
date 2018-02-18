@@ -1,5 +1,6 @@
 import RangeDateIterator from "../rangeDateIterator";
 import Mustache from "mustache";
+import template from "../../templates/seasonal.mustache";
 
 export default function MustacheRender(season) {
 
@@ -9,34 +10,63 @@ export default function MustacheRender(season) {
         var rootElement = document.createElement('div');
         var current_month = null;
 
+        var data = [];
+        data['days'] = [];
+
         while(it.valid()) {
             var current = it.value();
 
             if(current_month != current.getMonth()) {
-                current_month = current.getMonth();
-                monthElement = month(it)
-                rootElement.innerHTML = monthElement;
+
+
+
+                if(current_month == null) {
+                    current_month = current.getMonth();
+                } else {
+                    current_month = current.getMonth();
+
+                    var rendered = Mustache.render(month(), data);
+                    rootElement.innerHTML = rootElement.innerHTML + rendered;
+
+                    data['days'] = [];
+                }
             }
 
+            data['days'].push({day: it.value().getDate(), class: "ciccio"});
+            it.next();
         }
 
         return rootElement;
     }
-    
+
     function month(it) {
-        var days = [];
+        return `
+<div class="calendar">
+    <div class="title">
+        {{title}}
+    </div>
 
-        var current_month = null;
-        while(it.valid() &&
-            current_month == it.value().getMonth()) {
-            days.push({day: it.value().getDate(), class: "ciccio"});
-        }
+    <div class="labels">
+        <ul>
+            <li>Mon</li>
+            <li>Tue</li>
+            <li>Wed</li>
+            <li>Thu</li>
+            <li>Fri</li>
+            <li>Sat</li>
+            <li>Sun</li>
+        </ul>
+    </div>
 
-        var template = import('../../templates/seasonal.mustache').then();
+    <div class="days">
+        <ul>
+            {{#days}}
+            <li class="{{class}}"><p>{{day}}</p></li>
+            {{/days}}
+        </ul>
+    </div>
 
-        Mustache.parse(template);
-        var rendered = Mustache.render(template, days);
-
-        return rendered;
+</div>
+        `;
     }
 };
