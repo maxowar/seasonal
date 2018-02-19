@@ -1,5 +1,8 @@
 #season {
 
+  .calendar {
+    width: 400px;
+  }
 
   .cld-datetime{
     position: relative;
@@ -37,15 +40,26 @@
   .nav svg:hover{
 
   }
-  .labels,
+
+
+
   ul{
+    box-sizing: border-box;
     padding-left: 0;
   }
+
   .labels li,
   .days li{
+    box-sizing: border-box;
     display: inline-block;
     width: 14.28%;
     text-align: center;
+    margin-right: -4px; // reset inline-block
+  }
+
+  .days li{
+    border: 1px solid #eee;
+    position: relative; // this give relative point to .split
   }
 
   li.disable{
@@ -55,24 +69,30 @@
   li.prevMonth{
     opacity: 0.33;
   }
-  p{
+
+  .days li.disabled {
+    opacity: 0.33;
+  }
+
+  .days li p {
     position: relative;
-    margin: 5px;
-    padding: 5px;
+    margin: 0;
+    padding: 10px;
   }
 
   p.event{
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    border-radius: 50px;
-    border: 1px solid #999;
+    background: #0080FF;
+    color: #fff;
   }
+
   p.event:hover{
     cursor: pointer;
     background: #eee;
   }
 
+  li.previous-month {
+    border: 1px solid transparent;
+  }
 
   span {
     display: block;
@@ -109,5 +129,30 @@
   .month {
     clear: left;
   }
+
+
+
+  .days li:hover {
+
+  }
+
+  .days li.split::after,
+  .days li:hover::after {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 46px;
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px 10px 0 10px;
+    border-color: #18A689 transparent transparent transparent;
+    line-height: 0px;
+    _border-color: #18A689 #000000 #000000 #000000;
+    _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+    z-index: 10;
+  }
+
 }
 

@@ -2,8 +2,8 @@ import { Season, SeasonRender } from '../src/js/seasonal.js';
 
 var season = new Season(
     'Stagione 2018',
-    new Date(2018, 3, 1),
-    new Date(2018, 4, 15)
+    new Date(2018, 3, 10),
+    new Date(2018, 6, 15)
 );
 
 
