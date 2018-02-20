@@ -1,10 +1,9 @@
 import RangeDateIterator from "../rangeDateIterator";
 
-let BaseRender = function BaseRender(season) {
+let BaseRender = function BaseRender(season, rootElement) {
 
     this.calendar = function() {
         var it = new RangeDateIterator(season.start, season.end);
-        var rootElement = document.createElement('div');
         var current_month;
         var monthElement;
 
@@ -34,7 +33,6 @@ let BaseRender = function BaseRender(season) {
 
             it.next();
         }
-        return rootElement;
     };
 
 
@@ -46,6 +44,9 @@ let BaseRender = function BaseRender(season) {
         var p = document.createElement('p');
         p.textContent = it.value().toLocaleString('it', { month: "long" });
         div.appendChild(p);
+
+        rootElement.appendChild(div);
+
         return div;
     }
 

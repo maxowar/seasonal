@@ -1,12 +1,10 @@
 import RangeDateIterator from "../rangeDateIterator";
 import Mustache from "mustache";
 
-export default function MustacheRender(season) {
+export default function MustacheRender(season, rootElement) {
 
     this.calendar = function() {
         var it = new RangeDateIterator(season.start, season.end);
-
-        var rootElement = document.createElement('div');
         var current_month = null;
 
         var data = [];
@@ -64,13 +62,12 @@ export default function MustacheRender(season) {
 
         // last month
         rootElement.appendChild(renderMonth(data));
-
-        return rootElement;
     };
 
     function renderMonth(data) {
         var rendered = Mustache.render(month(), data);
         var calendarElement = document.createElement('div');
+        calendarElement.className = 'calendar';
         calendarElement.innerHTML = rendered;
         return calendarElement;
     };
@@ -87,7 +84,6 @@ export default function MustacheRender(season) {
 
     function month() {
         return `
-<div class="calendar">
     <div class="title">
         {{title}}
     </div>
@@ -111,8 +107,6 @@ export default function MustacheRender(season) {
             {{/days}}
         </ul>
     </div>
-
-</div>
         `;
     }
 };

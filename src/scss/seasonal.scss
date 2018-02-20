@@ -18,7 +18,14 @@
     width: calc(100% - 40px);
     margin: auto;
     text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    height: 40px;
   }
+  .title::first-letter {
+    text-transform: capitalize;
+  }
+
   .nav{
     position: relative;
     width: 20px;

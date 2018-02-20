@@ -1,4 +1,5 @@
 import Period from './period';
+import Event from './event';
 
 /**
  * A semantically named collection of Periods
@@ -18,6 +19,7 @@ let Season = function (name, start, end, periods) {
         [new Period(start, end)];
     this.index = {};
     this.name = name;
+    this.events = [];
 
     this.mergePeriods = function (period1, period2) {
         return new Period(period1.start, period2.end);
@@ -99,6 +101,14 @@ Season.prototype.toString = function () {
         serialized += period.toString() + '<br>';
     });
     return serialized;
+};
+
+Season.prototype.addEvents = function(events) {
+    this.events =  events;
+};
+
+Season.prototype.getEvents = function () {
+    return this.events;
 }
 
 export default Season;

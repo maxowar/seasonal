@@ -1,4 +1,5 @@
-import { Season, SeasonRender } from '../src/js/seasonal.js';
+import { Season, SeasonRender } from '../src/js/seasonal';
+import SeasonEvent from '../src/js/event';
 
 var season = new Season(
     'Stagione 2018',
@@ -9,9 +10,17 @@ var season = new Season(
 
 season.split(new Date(2018, 3,15));
 season.split(new Date(2018, 3,20));
-season.split(new Date(2018, 7,15));
 
-//season.unsplit(new Date(2018, 3,13));
+season.split(new Date(2018, 7,15)); // raise a warning
+
+season.split(new Date(2018,   4, 1));
+season.unsplit(new Date(2018, 4, 1));
+
+season.addEvents([
+    new SeasonEvent('Pasqua', new Date(2018, 4, 6), {color: '#ccc'})
+]);
+
+console.log(season);
 
 var renderer = new SeasonRender(season);
 renderer.render();

@@ -14,10 +14,8 @@ function SeasonRender(seasonToRender, opts) {
         // dynamic import
         //var resource = './render/' + ;
         //import(resource).then();
-        var engine = new engines[options['render_engine']](season);
-        var htmlElement = engine.calendar();
-
-        document.getElementById(options['root_element']).appendChild(htmlElement);
+        var engine = new engines[options['render_engine']](season, document.getElementById(options['root_element']));
+        engine.calendar();
     };
 
     function defaults() {
