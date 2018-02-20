@@ -61,6 +61,7 @@ let Season = function (name, start, end, periods) {
 
     this.buildIndex();
 };
+Season.prototype = new Period;
 Season.prototype.count = function () {
     return this.periods.length;
 };
