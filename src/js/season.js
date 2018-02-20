@@ -21,6 +21,8 @@ let Season = function (name, start, end, periods) {
     this.name = name;
     this.events = [];
 
+    var callbacks = [];
+
     this.mergePeriods = function (period1, period2) {
         return new Period(period1.start, period2.end);
     };
@@ -45,6 +47,16 @@ let Season = function (name, start, end, periods) {
                 period: this.periods[i]
             };
         }
+    };
+
+    this.dispatch = function (name, params) {
+        if(typeof callbacks[name] != 'undefined') {
+            callbacks[name].apply(this, params);
+        }
+    };
+
+    this.on = function (name, callback) {
+        callbacks[name] = callback;
     };
 
     this.buildIndex();
@@ -75,7 +87,11 @@ Season.prototype.split = function (when) {
             let newPeriod = new Period(new Date(when.getFullYear(),when.getMonth(), when.getDate() + 1), prev.end);
             prev.end = when;
             this.periods.splice(position, 0, newPeriod);
+
             this.buildIndex();
+
+            this.dispatch('split', [newPeriod]);
+
             return true;
         }
         position++;
@@ -93,6 +109,8 @@ Season.prototype.unsplit = function (date) {
         this.periods.splice(cursor.index + 1, 1);
 
         this.buildIndex();
+
+        this.dispatch('unsplit', [date]);
     }
 };
 Season.prototype.toString = function () {
@@ -109,6 +127,7 @@ Season.prototype.addEvents = function(events) {
 
 Season.prototype.getEvents = function () {
     return this.events;
-}
+};
+
 
 export default Season;

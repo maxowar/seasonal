@@ -14,7 +14,9 @@ function SeasonRender(seasonToRender, opts) {
         // dynamic import
         //var resource = './render/' + ;
         //import(resource).then();
-        var engine = new engines[options['render_engine']](season, document.getElementById(options['root_element']));
+        var rootElement = document.getElementById(options['root_element']);
+        rootElement.innerHTML = '';
+        var engine = new engines[options['render_engine']](season, rootElement);
         engine.calendar();
     };
 

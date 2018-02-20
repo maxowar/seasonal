@@ -7,6 +7,13 @@ var season = new Season(
     new Date(2018, 6, 15)
 );
 
+season.on('split', function (period) {
+    console.log("split:" + period);
+});
+
+season.on('unsplit', function (date) {
+    console.log("unsplit:" + date);
+})
 
 season.split(new Date(2018, 3,15));
 season.split(new Date(2018, 3,20));
@@ -19,6 +26,7 @@ season.unsplit(new Date(2018, 4, 1));
 season.addEvents([
     new SeasonEvent('Pasqua', new Date(2018, 4, 6), {color: '#ccc'})
 ]);
+
 
 console.log(season);
 
