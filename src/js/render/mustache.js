@@ -54,7 +54,8 @@ export default function MustacheRender(season, rootElement) {
             data['days'].push({
                 day: it.value().getDate(),
                 class: className,
-                date: current.getFullYear() + '_' + current.getMonth() + '_' + current.getDate()
+                date: current.getFullYear() + '-' + current.getMonth() + '-' + current.getDate(),
+                time: current.getTime()
             });
 
             it.next();
@@ -103,7 +104,7 @@ export default function MustacheRender(season, rootElement) {
     <div class="days">
         <ul>
             {{#days}}
-            <li class="{{class}}" data-date="{{date}}"><p>{{day}}</p></li>
+            <li class="{{class}}" data-date="{{date}}" data-time="{{time}}"><p>{{day}}</p></li>
             {{/days}}
         </ul>
     </div>
