@@ -11,9 +11,6 @@ function SeasonRender(seasonToRender, opts) {
     };
 
     this.render = function() {
-        // dynamic import
-        //var resource = './render/' + ;
-        //import(resource).then();
         var rootElement = document.getElementById(options['root_element']);
         rootElement.innerHTML = '';
         var engine = new engines[options['render_engine']](season, rootElement);
@@ -26,7 +23,6 @@ function SeasonRender(seasonToRender, opts) {
             render_engine: 'Mustache'
         }
     }
-
 }
 
 

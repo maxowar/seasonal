@@ -42,7 +42,7 @@ let Season = function (name, start, end, periods) {
     this.buildIndex = function () {
         var i;
         for(i = 0; i < this.periods.length; i++) {
-            this.index[this.periods[i].end.getTime()] = {
+            this.index[this.periods[i].end.unix()] = {
                 index: i,
                 period: this.periods[i]
             };
@@ -73,9 +73,6 @@ Season.prototype.periods = function () {
  * @param when Date
  */
 Season.prototype.split = function (when) {
-    if (when.constructor !== Date) {
-        throw new TypeError("Must be of type Date");
-    }
 
     let it = this.periods[Symbol.iterator]();
 
@@ -85,8 +82,8 @@ Season.prototype.split = function (when) {
     while (!cursor.done) {
         prev = cursor.value;
         if (prev.contains(when)) {
-            let newPeriod = new Period(new Date(when.getFullYear(),when.getMonth(), when.getDate() + 1), prev.end);
-            prev.end = when;
+            let newPeriod = new Period(when.clone().add(1, 'd'), prev.end);
+            prev.end = when.clone();
             this.periods.splice(position, 0, newPeriod);
 
             this.buildIndex();
@@ -102,9 +99,9 @@ Season.prototype.split = function (when) {
     return false;
 };
 Season.prototype.unsplit = function (date) {
-    if(typeof this.index[date.getTime()] != 'undefined') {
+    if(typeof this.index[date.unix()] != 'undefined') {
 
-        let cursor = this.index[date.getTime()];
+        let cursor = this.index[date.unix()];
 
         cursor.period.end = this.periods[cursor.index + 1].end;
         this.periods.splice(cursor.index + 1, 1);

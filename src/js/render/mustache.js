@@ -1,44 +1,48 @@
-import RangeDateIterator from "../rangeDateIterator";
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+
+const moment = extendMoment(Moment);
+
 import Mustache from "mustache";
 
 export default function MustacheRender(season, rootElement) {
 
     this.calendar = function() {
-        var it = new RangeDateIterator(season.start, season.end);
+        var range = moment.range(season.start, season.end);
+
         var current_month = null;
 
         var data = [];
         data['days'] = [];
 
-        while(it.valid()) {
-            var current = it.value();
+        for(let current of range.by('days')) {
 
             // render new month
-            if(current_month != current.getMonth()) {
+            if(current_month != current.month()) {
 
                 // first month
                 if(current_month == null) {
-                    current_month = current.getMonth();
+                    current_month = current.month();
 
-                    data['title'] =  current.toLocaleString(navigator.language, { month: "long" }) + ' ' + current.getFullYear() ;
+                    data['title'] =  current.format('MMMM YYYY');
 
                     fillInDays(data, current);
 
                     // disable n days from 1 to season.start
-                    for(var i = 0; i < season.start.getDate() - 1; i++) {
+                    for(var i = 0; i < season.start.date() - 1; i++) {
                         data['days'].push({day: i + 1, class: "disabled"});
                     }
 
                 // other months
                 } else {
-                    current_month = current.getMonth();
+                    current_month = current.month();
 
                     // render previous month
                     rootElement.appendChild(renderMonth(data));
 
                     // init new month
                     data['days'] = [];
-                    data['title'] =  current.toLocaleString(navigator.language, { month: "long" }) + ' ' + current.getFullYear() ;
+                    data['title'] =  current.format('MMMM YYYY');
 
                     // fill empty days to 1 of the month
                     fillInDays(data, current);
@@ -46,19 +50,17 @@ export default function MustacheRender(season, rootElement) {
             }
 
             var className = '';
-            if(typeof season.index[current.getTime()] != 'undefined') {
+            if(typeof season.index[current.unix()] != 'undefined') {
                 className = 'split';
             }
 
             // add days to month
             data['days'].push({
-                day: it.value().getDate(),
+                day: current.date(),
                 class: className,
-                date: current.getFullYear() + '-' + current.getMonth() + '-' + current.getDate(),
-                time: current.getTime()
+                date: current.format('YYYY-MM-DD'),
+                time: current.unix()
             });
-
-            it.next();
         }
 
         // last month
@@ -77,7 +79,7 @@ export default function MustacheRender(season, rootElement) {
 
         firstDayWeek = 1;
 
-        var firstDayOfTheMonth = new Date(current.getFullYear(), current.getMonth(), 1);
+        var firstDayOfTheMonth = new Date(current.year(), current.month(), 1);
         for(var i = 0; i < (firstDayOfTheMonth.getDay() + (7 - firstDayWeek)) % 7; i++) {
             data['days'].push({day: " ", class: "previous-month"});
         }

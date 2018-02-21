@@ -15,11 +15,11 @@ let Period = function (start, end) {
  * @param date Date
  */
 Period.prototype.contains = function (date) {
-    return this.start.getTime() <= date.getTime() && this.end.getTime() > date.getTime();
+    return this.start <= date && this.end > date;
 };
 
 Period.prototype.toString = function () {
-    return '(' + this.start.toDateString() + ', ' + this.end.toDateString() + ')';
+    return '(' + this.start + ', ' + this.end + ')';
 };
 
 export default Period;
